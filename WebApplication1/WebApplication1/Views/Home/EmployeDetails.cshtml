@@ -1,0 +1,70 @@
+﻿@model WebApplication1.Models.Employee
+
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta name="viewport" content="width=device-width" />
+	<title>EmployeDetails</title>
+</head>
+<style type="text/css">
+	TABLE {
+		width: 400px; /* Ширина таблицы */
+		border-collapse: collapse; /* Убираем двойные линии между ячейками */
+	}
+
+	TD, TH {
+		padding: 10px; /* Поля вокруг содержимого таблицы */
+		border: 1px solid black; /* Параметры рамки */
+	}
+
+	TH {
+		background: #b0e0e6; /* Цвет фона */
+	}
+</style>
+<body>
+
+	<div>
+		<h4>Employee</h4>
+		<hr />
+	</div>
+	<div>
+		<table border-collapse: collapse>
+			<tr>
+				<th>@Html.DisplayNameFor(model => model.Id)</th>
+				<th>@Html.DisplayNameFor(model => model.LastName)</th>
+				<th>@Html.DisplayNameFor(model => model.FirstName)</th>
+				<th>@Html.DisplayNameFor(model => model.Patronymic)</td>
+				<th>@Html.DisplayNameFor(model => model.Age)</th>
+			</tr>
+			<tr>
+				<td>@Html.DisplayFor(model => model.Id)</td>
+				<td>@Html.DisplayFor(model => model.LastName)</td>
+				<td>@Html.DisplayFor(model => model.FirstName)</td>
+				<td>@Html.DisplayFor(model => model.Patronymic)</td>
+				<td>@Html.DisplayFor(model => model.Age)</td>
+			</tr>
+		</table>
+	</div>
+	<div>
+		<p>
+			<h3>QRCode сотрудника</h3>
+			<img src="/qr/code?str=@Html.DisplayFor(model => model.Id)|
+									@Html.DisplayFor(model => model.LastName)|
+									@Html.DisplayFor(model => model.FirstName)|
+									@Html.DisplayFor(model => model.Patronymic)|
+									@Html.DisplayFor(model => model.Age)" width="250" />
+		</p>
+	</div>
+	<div>
+		@*@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |*@
+		@Html.ActionLink("К списку", "Employees") |
+		@Html.ActionLink("На главную", "")
+
+	</div>
+</body>
+</html>
