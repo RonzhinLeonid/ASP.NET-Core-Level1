@@ -1,0 +1,40 @@
+﻿@model WebApplication1.Models.Employee
+
+<div class="container"
+	<h4>Employee</h4>
+	<hr />
+	<table class="table">
+		<tr>
+			<th>@Html.DisplayNameFor(model => model.Id)</th>
+			<th>@Html.DisplayNameFor(model => model.LastName)</th>
+			<th>@Html.DisplayNameFor(model => model.FirstName)</th>
+			<th>@Html.DisplayNameFor(model => model.Patronymic)</td>
+			<th>@Html.DisplayNameFor(model => model.Age)</th>
+		</tr>
+		<tr>
+			<td>@Html.DisplayFor(model => model.Id)</td>
+			<td>@Html.DisplayFor(model => model.LastName)</td>
+			<td>@Html.DisplayFor(model => model.FirstName)</td>
+			<td>@Html.DisplayFor(model => model.Patronymic)</td>
+			<td>@Html.DisplayFor(model => model.Age)</td>
+		</tr>
+	</table>
+</div>
+
+<div class="container"
+	<p>
+		<h3>QRCode сотрудника</h3>
+		<img src="/qr/code?str=@Html.DisplayFor(model => model.Id)|
+								@Html.DisplayFor(model => model.LastName)|
+								@Html.DisplayFor(model => model.FirstName)|
+								@Html.DisplayFor(model => model.Patronymic)|
+								@Html.DisplayFor(model => model.Age)" width="250" />
+	</p>
+</div>
+
+<div class="container"
+	@*@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |*@
+	<a asp-controller="Home" asp-action="Index">На главную</a>
+	<a asp-action="Index">К списку</a>
+</div>
+
