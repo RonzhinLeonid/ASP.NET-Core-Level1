@@ -5,6 +5,10 @@ VisualStudioVersion = 17.1.32113.165
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{5B771A28-201A-42A0-BC93-48FB00BE7157}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "DataLayer\DataLayer.csproj", "{EEE6B58A-DBE7-4015-8F0D-572F0510C881}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "migrations", "migrations\migrations.csproj", "{5A033912-ED2A-4CFA-A48B-2691CB522047}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{5B771A28-201A-42A0-BC93-48FB00BE7157}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B771A28-201A-42A0-BC93-48FB00BE7157}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B771A28-201A-42A0-BC93-48FB00BE7157}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEE6B58A-DBE7-4015-8F0D-572F0510C881}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEE6B58A-DBE7-4015-8F0D-572F0510C881}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEE6B58A-DBE7-4015-8F0D-572F0510C881}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEE6B58A-DBE7-4015-8F0D-572F0510C881}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A033912-ED2A-4CFA-A48B-2691CB522047}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A033912-ED2A-4CFA-A48B-2691CB522047}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A033912-ED2A-4CFA-A48B-2691CB522047}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A033912-ED2A-4CFA-A48B-2691CB522047}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

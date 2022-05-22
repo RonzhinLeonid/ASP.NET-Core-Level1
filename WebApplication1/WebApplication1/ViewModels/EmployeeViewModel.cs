@@ -1,6 +1,6 @@
-﻿namespace WebApplication1.Models
+﻿namespace WebApplication1.ViewModels
 {
-    public class Employee
+    public class EmployeeViewModel
     {
         public int Id { get; set; }
 
