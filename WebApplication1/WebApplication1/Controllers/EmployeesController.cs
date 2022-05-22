@@ -1,28 +1,81 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Models;
+using WebApplication1.Services.Interfaces;
+using WebApplication1.ViewModels;
 
 namespace WebApplication1.Controllers
 {
     public class EmployeesController : Controller
     {
-        private static readonly List<Employee> __Employees = new()
+        private IEmployeesData _employees;
+        private readonly IMapper _mapper;
+        public EmployeesController(IEmployeesData employees, IMapper mapper)
         {
-            new Employee { Id = 1, LastName = "Иванов", FirstName = "Иван", Patronymic = "Иванович", Age = 23 },
-            new Employee { Id = 2, LastName = "Петров", FirstName = "Пётр", Patronymic = "Петрович", Age = 27 },
-            new Employee { Id = 3, LastName = "Сидоров", FirstName = "Сидор", Patronymic = "Сидорович", Age = 18 },
-        };
+            _employees = employees;
+            _mapper = mapper;
+        }
         public IActionResult Index()
         {
-            return View(__Employees);
+            var employees = _employees.GetAll();
+            return View(employees);
         }
 
-        public IActionResult Details(int Id)
+        public IActionResult Details(int id)
         {
-            var employee = __Employees.FirstOrDefault(x => x.Id == Id);
+            var employee = _employees.GetById(id);
             if (employee is null)
                 return NotFound();
 
             return View(employee);
+        }
+        public IActionResult Create()
+        {
+            return View("Edit", new EmployeeViewModel());
+        }
+        public IActionResult Edit(int? id)
+        {
+            if (id is null)
+                return View(new EmployeeViewModel());
+
+            var employee = _employees.GetById((int)id);
+            if (employee is null)
+                return NotFound();
+
+            var view_model = _mapper.Map<Employee, EmployeeViewModel>(employee);
+
+            return View(view_model);
+        }
+        [HttpPost]
+        public IActionResult Edit(EmployeeViewModel model)
+        {
+            var employee = _mapper.Map<EmployeeViewModel, Employee>(model);
+            if (model.Id == 0)
+            {
+                var employeeNew = _employees.Add(employee);
+                return RedirectToAction(nameof(Details), new { Id = employeeNew });
+            }
+            _employees.Edit(employee);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Delete(int id)
+        {
+            var employee = _employees.GetById((int)id);
+            if (employee is null)
+                return NotFound();
+
+            var view_model = _mapper.Map<Employee, EmployeeViewModel>(employee);
+
+            return View(view_model);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            if (!_employees.Delete(id))
+                return NotFound();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

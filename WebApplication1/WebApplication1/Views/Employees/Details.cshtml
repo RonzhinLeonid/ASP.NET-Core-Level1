@@ -1,7 +1,7 @@
 ﻿@model WebApplication1.Models.Employee
 
 <div class="container"
-	<h4>Employee</h4>
+	<h4>Сотрудник</h4>
 	<hr />
 	<table class="table">
 		<tr>
@@ -33,8 +33,9 @@
 </div>
 
 <div class="container"
-	@*@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |*@
-	<a asp-controller="Home" asp-action="Index">На главную</a>
-	<a asp-action="Index">К списку</a>
+	<p>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-default">На главную</a>
+        <a asp-action="Index" class="btn btn-default">К списку</a>
+    </p>
 </div>
 

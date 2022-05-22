@@ -1,7 +1,17 @@
+using AutoMapper;
+using WebApplication1.Services;
+using WebApplication1.Services.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IEmployeesData, InMemoryEmployeesData>();
+
+var mapperConfiguration = new MapperConfiguration(mp => mp.AddProfile(new MapperProfile()));
+var mapper = mapperConfiguration.CreateMapper();
+builder.Services.AddSingleton(mapper);
 
 var app = builder.Build();
 

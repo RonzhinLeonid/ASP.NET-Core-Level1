@@ -1,6 +1,6 @@
-﻿namespace WebApplication1.Models
+﻿namespace WebApplication1.ViewModels
 {
-    public class Employee
+    public class EmployeeViewModel
     {
         public int Id { get; set; }
 
@@ -11,10 +11,5 @@
         public string Patronymic { get; set; }
 
         public int Age { get; set; }
-
-        public override string ToString()
-        {
-            return $"(id:{Id}){LastName} {FirstName} {Patronymic} - age:{Age}";
-        }
-    } 
+    }
 }
