@@ -1,5 +1,4 @@
-﻿using WebApplication1.Data;
-using WebApplication1.Models;
+﻿using DataLayer;
 using WebApplication1.Services.Interfaces;
 
 namespace WebApplication1.Services
@@ -7,37 +6,42 @@ namespace WebApplication1.Services
     public class InMemoryEmployeesData : IEmployeesData
     {
         private ILogger<InMemoryEmployeesData> _logger;
-        private ICollection<Employee> _employees;
-        private int _lastFreeId;
+        private readonly ApplicationDataContext _context;
+        //private ICollection<Employee> _employees;
+        //private int _lastFreeId;
 
-        public InMemoryEmployeesData(ILogger<InMemoryEmployeesData> logger)
+        public InMemoryEmployeesData(ApplicationDataContext context, ILogger<InMemoryEmployeesData> logger)
         {
+            _context = context;
             _logger = logger;
-            _employees = TestData.Employees;
+            //_employees = TestData.Employees;
 
-            if (_employees.Any())
-            {
-                _lastFreeId = _employees.Max(e => e.Id) + 1;
-            }
-            else
-                _lastFreeId = 1;
+            //if (_employees.Any())
+            //{
+            //    _lastFreeId = _employees.Max(e => e.Id) + 1;
+            //}
+            //else
+            //    _lastFreeId = 1;
         }
 
         public int Add(Employee employee)
         {
-            if (_employees is null)
+            if (_context.Employees is null)
             {
                 throw new ArgumentNullException(nameof(employee));
             }
-            if (_employees.Contains(employee))
-            {
-                return employee.Id;
-            }
+            //if (_context.Employees.Contains(employee))
+            //{
+            //    return employee.Id;
+            //}
 
-            employee.Id = _lastFreeId;
-            _lastFreeId++;
+            //employee.Id = _lastFreeId;
+            //_lastFreeId++;
 
-            _employees.Add(employee);
+            //_employees.Add(employee);
+
+            _context.Set<Employee>().Add(employee);
+            _context.SaveChanges();
 
             _logger.LogInformation("Сотрудник {0} добавлен", employee);
 
@@ -53,7 +57,10 @@ namespace WebApplication1.Services
 
                 return false;
             }
-            _employees.Remove(employee);
+            //_employees.Remove(employee);
+
+            _context.Set<Employee>().Remove(employee);
+            _context.SaveChanges();
 
             _logger.LogInformation("Сотрудник {0} удален", employee);
 
@@ -62,14 +69,14 @@ namespace WebApplication1.Services
 
         public bool Edit(Employee employee)
         {
-            if (_employees is null)
+            if (_context.Employees is null)
             {
                 throw new ArgumentNullException(nameof(employee));
             }
-            if (_employees.Contains(employee))
-            {
-                return true;
-            }
+            //if (_employees.Contains(employee))
+            //{
+            //    return true;
+            //}
 
             var db_employee = GetById(employee.Id);
             if (db_employee is null)
@@ -78,11 +85,14 @@ namespace WebApplication1.Services
 
                 return false;
             }
-            db_employee.Id = employee.Id;
-            db_employee.LastName = employee.LastName;
-            db_employee.FirstName = employee.FirstName;
-            db_employee.Patronymic = employee.Patronymic;
-            db_employee.Age = employee.Age;
+            //db_employee.Id = employee.Id;
+            //db_employee.LastName = employee.LastName;
+            //db_employee.FirstName = employee.FirstName;
+            //db_employee.Patronymic = employee.Patronymic;
+            //db_employee.Age = employee.Age;
+
+            _context.Set<Employee>().Update(db_employee);
+            _context.SaveChanges();
 
             _logger.LogInformation("Сотрудник {0} отредактирован", employee);
 
@@ -91,12 +101,12 @@ namespace WebApplication1.Services
 
         public IEnumerable<Employee> GetAll()
         {
-            return _employees;
+            return _context.Employees;
         }
 
         public Employee? GetById(int id)
         {
-            var employee = _employees.FirstOrDefault(e => e.Id == id);
+            var employee = _context.Set<Employee>().SingleOrDefault(t => t.Id == id);
             return employee;
         }
     }

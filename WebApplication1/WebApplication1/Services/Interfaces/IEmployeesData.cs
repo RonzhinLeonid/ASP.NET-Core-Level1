@@ -1,4 +1,5 @@
-﻿using WebApplication1.Models;
+﻿using DataLayer;
+using WebApplication1.Models;
 
 namespace WebApplication1.Services.Interfaces
 {
@@ -13,5 +14,5 @@ namespace WebApplication1.Services.Interfaces
         bool Edit(Employee employee);
 
         bool Delete(int id);
-            }
+    }
 }
