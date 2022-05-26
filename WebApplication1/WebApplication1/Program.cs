@@ -8,16 +8,19 @@ using ConfigurationManager = System.Configuration.ConfigurationManager;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var services = builder.Services;
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+services.AddControllersWithViews();
 
-builder.Services.AddScoped<IEmployeesData, InMemoryEmployeesData>();
+services.AddScoped<IEmployeesData, InMemoryEmployeesData>();
+services.AddScoped<IProductData, InMemoryProductData>();
 
 var mapperConfiguration = new MapperConfiguration(mp => mp.AddProfile(new MapperProfile()));
 var mapper = mapperConfiguration.CreateMapper();
-builder.Services.AddSingleton(mapper);
+services.AddSingleton(mapper);
 
-builder.Services.AddDbContext<ApplicationDataContext>(options =>
+
+services.AddDbContext<ApplicationDataContext>(options =>
 {
     options.UseNpgsql("Host=localhost;Port=5432;Username=postgres;Password=root;Database=WebApi;");
 });

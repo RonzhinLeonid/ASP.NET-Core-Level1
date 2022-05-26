@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using WebApplication1.Models;
+using WebApplication1.Services.Interfaces;
+using WebApplication1.ViewModels;
 
 namespace WebApplication1.Controllers
 {
@@ -13,8 +15,21 @@ namespace WebApplication1.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index([FromServices] IProductData ProductData)
         {
+            var products = ProductData.GetProducts()
+               .OrderBy(p => p.Order)
+               .Take(6)
+               .Select(p => new ProductViewModel
+               {
+                   Id = p.Id,
+                   Name = p.Name,
+                   Price = p.Price,
+                   ImageUrl = p.ImageUrl,
+               });
+
+            ViewBag.Products = products;
+
             return View();
         }
 
