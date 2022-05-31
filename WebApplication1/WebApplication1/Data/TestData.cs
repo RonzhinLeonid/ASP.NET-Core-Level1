@@ -66,5 +66,16 @@ namespace WebApplication1.Data
         new() { Id = 11, Name = "Джинсы женские", Price = 1025, ImageUrl = "product11.jpg", Order = 10, SectionId = 25, BrandId = 3 },
         new() { Id = 12, Name = "Летний костюм", Price = 1025, ImageUrl = "product12.jpg", Order = 11, SectionId = 25, BrandId = 3 },
         };
+
+        public static IEnumerable<Blog> Blogs { get; } = new Blog[]
+        {
+        new() { Id = 1, Name = "Блог №1", User = "Блогер №1" , Date = new DateTime(2015, 7, 20, 18, 30, 25), Rating = 4.5, ImageUrl = "blog-one.jpg", Text = "Содержимое блога №1" },
+        new() { Id = 2, Name = "Блог №2", User = "Блогер №2" , Date = new DateTime(2016, 6, 21, 11, 30, 25), Rating = 3.5, ImageUrl = "blog-two.jpg", Text = "Содержимое блога №2" },
+        new() { Id = 3, Name = "Блог №3", User = "Блогер №3" , Date = new DateTime(2017, 5, 19, 8, 30, 25), Rating = 5, ImageUrl = "blog-three.jpg", Text = "Содержимое блога №3" },
+        new() { Id = 4, Name = "Блог №4", User = "Блогер №4" , Date = new DateTime(2018, 7, 10, 15, 30, 25), Rating = 2, ImageUrl = "man-one.jpg", Text = "Содержимое блога №4" },
+        new() { Id = 5, Name = "Блог №5", User = "Блогер №5" , Date = new DateTime(2019, 8, 10, 15, 30, 25), Rating = 2.3, ImageUrl = "man-two.jpg", Text = "Содержимое блога №5" },
+        new() { Id = 6, Name = "Блог №6", User = "Блогер №6" , Date = new DateTime(2020, 1, 10, 15, 30, 25), Rating = 2.8, ImageUrl = "man-three.jpg", Text = "Содержимое блога №6" },
+        new() { Id = 1, Name = "Блог №7", User = "Блогер №7" , Date = new DateTime(2011, 12, 10, 15, 30, 25), Rating = 2, ImageUrl = "man-four.jpg", Text = "Содержимое блога №7" },
+        };
     }
 }

@@ -11,6 +11,7 @@ namespace WebApplication1.Services
         {
             CreateMap<Employee, EmployeeViewModel>();
             CreateMap<EmployeeViewModel, Employee>();
+            CreateMap<Blog, BlogViewModel>();
         }
     }
 }

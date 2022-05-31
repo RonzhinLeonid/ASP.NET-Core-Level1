@@ -14,6 +14,7 @@ services.AddControllersWithViews();
 
 services.AddScoped<IEmployeesData, InMemoryEmployeesData>();
 services.AddScoped<IProductData, InMemoryProductData>();
+services.AddScoped<IBlogData, InMemoryBlogData>(); 
 
 var mapperConfiguration = new MapperConfiguration(mp => mp.AddProfile(new MapperProfile()));
 var mapper = mapperConfiguration.CreateMapper();
