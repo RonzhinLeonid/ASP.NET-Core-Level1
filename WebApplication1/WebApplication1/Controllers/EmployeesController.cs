@@ -50,6 +50,15 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult Edit(EmployeeViewModel model)
         {
+            if (model.LastName == "Qwe" && model.FirstName == "Qwe" && model.Patronymic == "Qwe")
+                ModelState.AddModelError("", "Qwe - плохой выбор");
+
+            if (model.FirstName == "Asd")
+                ModelState.AddModelError("Name", "Asd - неважное имя");
+
+            if (!ModelState.IsValid)
+                return View(model);
+
             var employee = _mapper.Map<EmployeeViewModel, Employee>(model);
             if (model.Id == 0)
             {
