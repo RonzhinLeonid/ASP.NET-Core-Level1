@@ -9,9 +9,9 @@ namespace WebApplication1.Services
     {
         public MapperProfile()
         {
-            CreateMap<Employee, EmployeeViewModel>();
-            CreateMap<EmployeeViewModel, Employee>();
-            CreateMap<Blog, BlogViewModel>();
+            CreateMap<Employee, EmployeeViewModel>().ReverseMap();
+            CreateMap<Blog, BlogViewModel>().ReverseMap();
+            CreateMap<Product, ProductViewModel>().ReverseMap();
         }
     }
 }

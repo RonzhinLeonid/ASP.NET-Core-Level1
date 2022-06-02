@@ -10,7 +10,6 @@ namespace WebApplication1.Controllers
     {
         private readonly IBlogData _blogData;
         private readonly IMapper _mapper;
-        private readonly int _countBlogInPage = 3;
 
         public BlogsController(IBlogData BlogData, IMapper mapper)
         {
@@ -18,16 +17,22 @@ namespace WebApplication1.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index(int numberPage)
+        public IActionResult Index(int numberPage, int countBlogInPage = 3)
         {
-            var blogs = _blogData.GetBlogs();
-            var blogs_views = blogs.Skip(_countBlogInPage * numberPage).Take(_countBlogInPage).Select(x => _mapper.Map<Blog, BlogViewModel>(x)).ToArray();
+            IEnumerable<Blog> blogs;
 
-            return View(new PageBlogViewModel()
+            if (numberPage is { } page && countBlogInPage > 0)
             {
-                CountPage = (int)Math.Ceiling((double)blogs.Count() / _countBlogInPage),
-                Blogs = blogs_views 
-            });
+                blogs = _blogData.Get(page * countBlogInPage, countBlogInPage);
+            }
+            else
+                blogs = _blogData.GetBlogs();
+
+            ViewBag.PagesCount = countBlogInPage > 0
+                ? (int?)Math.Ceiling(_blogData.GetCount() / (double)countBlogInPage)
+                : null!;
+
+            return View(blogs.Select(x => _mapper.Map<Blog, BlogViewModel>(x)));
         }
 
         public IActionResult ShopBlog()

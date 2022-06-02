@@ -1,6 +1,6 @@
-﻿using DataLayer;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using migrations.Context;
 
 namespace migrations
 {

@@ -1,9 +1,13 @@
 ﻿using DataLayer.Base.Interfaces;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataLayer.Base
 {
     public abstract class Entity : IEntity, IEquatable<Entity>
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public bool Equals(Entity? other)

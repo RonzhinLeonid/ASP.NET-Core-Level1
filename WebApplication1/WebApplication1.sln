@@ -5,9 +5,11 @@ VisualStudioVersion = 17.1.32113.165
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{5B771A28-201A-42A0-BC93-48FB00BE7157}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "DataLayer\DataLayer.csproj", "{EEE6B58A-DBE7-4015-8F0D-572F0510C881}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLayer", "DataLayer\DataLayer.csproj", "{EEE6B58A-DBE7-4015-8F0D-572F0510C881}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "migrations", "migrations\migrations.csproj", "{5A033912-ED2A-4CFA-A48B-2691CB522047}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "migrations", "migrations\migrations.csproj", "{5A033912-ED2A-4CFA-A48B-2691CB522047}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebStore.DAL", "WebStore.DAL\WebStore.DAL.csproj", "{F781CCC1-E2BB-46BE-8939-E6F1EBA5762F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{5A033912-ED2A-4CFA-A48B-2691CB522047}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A033912-ED2A-4CFA-A48B-2691CB522047}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A033912-ED2A-4CFA-A48B-2691CB522047}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F781CCC1-E2BB-46BE-8939-E6F1EBA5762F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F781CCC1-E2BB-46BE-8939-E6F1EBA5762F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F781CCC1-E2BB-46BE-8939-E6F1EBA5762F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F781CCC1-E2BB-46BE-8939-E6F1EBA5762F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
