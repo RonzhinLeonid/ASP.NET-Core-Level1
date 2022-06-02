@@ -1,9 +1,12 @@
-﻿@model PageBlogViewModel
+﻿@model IEnumerable<BlogViewModel>
+@{
+	var pages_count = (int?)ViewBag.PagesCount;
+}
 
 <div class="blog-post-area">
 	<h2 class="title text-center">Latest From our Блог</h2>
 
-	@foreach (var blog in Model.Blogs)
+	@foreach (var blog in Model)
 	{
 		<div class="blog-post-default">@blog.Name
 			<h3></h3>
@@ -34,10 +37,13 @@
 
 	<div class="pagination-area">
 		<ul class="pagination">
-			@for(int i = 0; i < Model.CountPage; i++)
-				{
-					<li><a asp-controller="Blogs" asp-action="Index" asp-route-NumberPage=@i>@(i+1)</a></li>
-				}
+			@if	(pages_count != null && pages_count > 1)
+			{
+				for(int i = 0; i < pages_count; i++)
+					{
+						<li><a asp-controller="Blogs" asp-action="Index" asp-route-NumberPage=@i>@(i+1)</a></li>
+					}
+			}
 			@*<li><a asp-controller="Blogs" asp-action="Index" asp-route-NumberPage=0>1</a></li>
 			<li><a asp-controller="Blogs" asp-action="Index" asp-route-NumberPage=1>2</a></li>
 			<li><a asp-controller="Blogs" asp-action="Index" asp-route-NumberPage=2>3</a></li>

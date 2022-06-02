@@ -1,27 +1,18 @@
 ﻿using DataLayer;
 using WebApplication1.Services.Interfaces;
+using WebStore.DAL.Context;
 
-namespace WebApplication1.Services
+namespace WebApplication1.Services.InSQL
 {
-    public class InMemoryEmployeesData : IEmployeesData
+    public class InSQLEmployeesData : IEmployeesData
     {
-        private ILogger<InMemoryEmployeesData> _logger;
-        private readonly ApplicationDataContext _context;
-        //private ICollection<Employee> _employees;
-        //private int _lastFreeId;
+        private ILogger<InSQLEmployeesData> _logger;
+        private readonly WebStoreDB _context;
 
-        public InMemoryEmployeesData(ApplicationDataContext context, ILogger<InMemoryEmployeesData> logger)
+        public InSQLEmployeesData(WebStoreDB context, ILogger<InSQLEmployeesData> logger)
         {
             _context = context;
             _logger = logger;
-            //_employees = TestData.Employees;
-
-            //if (_employees.Any())
-            //{
-            //    _lastFreeId = _employees.Max(e => e.Id) + 1;
-            //}
-            //else
-            //    _lastFreeId = 1;
         }
 
         public int Add(Employee employee)
@@ -30,15 +21,6 @@ namespace WebApplication1.Services
             {
                 throw new ArgumentNullException(nameof(employee));
             }
-            //if (_context.Employees.Contains(employee))
-            //{
-            //    return employee.Id;
-            //}
-
-            //employee.Id = _lastFreeId;
-            //_lastFreeId++;
-
-            //_employees.Add(employee);
 
             _context.Set<Employee>().Add(employee);
             _context.SaveChanges();
@@ -57,7 +39,6 @@ namespace WebApplication1.Services
 
                 return false;
             }
-            //_employees.Remove(employee);
 
             _context.Set<Employee>().Remove(employee);
             _context.SaveChanges();
@@ -73,10 +54,6 @@ namespace WebApplication1.Services
             {
                 throw new ArgumentNullException(nameof(employee));
             }
-            //if (_employees.Contains(employee))
-            //{
-            //    return true;
-            //}
 
             var db_employee = GetById(employee.Id);
             if (db_employee is null)
@@ -85,11 +62,6 @@ namespace WebApplication1.Services
 
                 return false;
             }
-            //db_employee.Id = employee.Id;
-            //db_employee.LastName = employee.LastName;
-            //db_employee.FirstName = employee.FirstName;
-            //db_employee.Patronymic = employee.Patronymic;
-            //db_employee.Age = employee.Age;
 
             _context.Set<Employee>().Update(db_employee);
             _context.SaveChanges();

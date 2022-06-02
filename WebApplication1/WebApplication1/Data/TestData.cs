@@ -4,6 +4,12 @@ namespace WebApplication1.Data
 {
     public class TestData
     {
+        public static ICollection<Employee> Employees { get; } = new List<Employee>
+        {
+            new() { Id = 1, LastName = "Иванов", FirstName = "Иван", Patronymic = "Иванович", Age = 23 },
+            new() { Id = 2, LastName = "Петров", FirstName = "Пётр", Patronymic = "Петрович", Age = 27 },
+            new() { Id = 3, LastName = "Сидоров", FirstName = "Сидор", Patronymic = "Сидорович", Age = 18 },
+        };
         /// <summary>Секции</summary>
         public static IEnumerable<Section> Sections { get; } = new Section[]
         {
@@ -67,7 +73,7 @@ namespace WebApplication1.Data
         new() { Id = 12, Name = "Летний костюм", Price = 1025, ImageUrl = "product12.jpg", Order = 11, SectionId = 25, BrandId = 3 },
         };
 
-        public static IEnumerable<Blog> Blogs { get; } = new Blog[]
+        public static ICollection<Blog> Blogs { get; } = new Blog[]
         {
         new() { Id = 1, Name = "Блог №1", User = "Блогер №1" , Date = new DateTime(2015, 7, 20, 18, 30, 25), Rating = 4.5, ImageUrl = "blog-one.jpg", Text = "Содержимое блога №1" },
         new() { Id = 2, Name = "Блог №2", User = "Блогер №2" , Date = new DateTime(2016, 6, 21, 11, 30, 25), Rating = 3.5, ImageUrl = "blog-two.jpg", Text = "Содержимое блога №2" },
