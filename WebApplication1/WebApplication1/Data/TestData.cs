@@ -1,14 +1,51 @@
 ﻿using DataLayer;
+using Bogus;
+using Bogus.DataSets;
+using static Bogus.DataSets.Name;
 
 namespace WebApplication1.Data
 {
     public class TestData
     {
+        static Faker faker = new Faker("ru");
+
         public static ICollection<Employee> Employees { get; } = new List<Employee>
         {
             new() { Id = 1, LastName = "Иванов", FirstName = "Иван", Patronymic = "Иванович", Age = 23 },
             new() { Id = 2, LastName = "Петров", FirstName = "Пётр", Patronymic = "Петрович", Age = 27 },
             new() { Id = 3, LastName = "Сидоров", FirstName = "Сидор", Patronymic = "Сидорович", Age = 18 },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Male), FirstName = faker.Name.FirstName(Gender.Male), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Female), FirstName = faker.Name.FirstName(Gender.Female), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Male), FirstName = faker.Name.FirstName(Gender.Male), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Female), FirstName = faker.Name.FirstName(Gender.Female), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Male), FirstName = faker.Name.FirstName(Gender.Male), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Female), FirstName = faker.Name.FirstName(Gender.Female), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Male), FirstName = faker.Name.FirstName(Gender.Male), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Female), FirstName = faker.Name.FirstName(Gender.Female), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Male), FirstName = faker.Name.FirstName(Gender.Male), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Female), FirstName = faker.Name.FirstName(Gender.Female), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Male), FirstName = faker.Name.FirstName(Gender.Male), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Female), FirstName = faker.Name.FirstName(Gender.Female), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Male), FirstName = faker.Name.FirstName(Gender.Male), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Female), FirstName = faker.Name.FirstName(Gender.Female), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Male), FirstName = faker.Name.FirstName(Gender.Male), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Female), FirstName = faker.Name.FirstName(Gender.Female), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Male), FirstName = faker.Name.FirstName(Gender.Male), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Female), FirstName = faker.Name.FirstName(Gender.Female), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Male), FirstName = faker.Name.FirstName(Gender.Male), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Female), FirstName = faker.Name.FirstName(Gender.Female), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Male), FirstName = faker.Name.FirstName(Gender.Male), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Female), FirstName = faker.Name.FirstName(Gender.Female), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Male), FirstName = faker.Name.FirstName(Gender.Male), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Female), FirstName = faker.Name.FirstName(Gender.Female), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Male), FirstName = faker.Name.FirstName(Gender.Male), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Female), FirstName = faker.Name.FirstName(Gender.Female), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Male), FirstName = faker.Name.FirstName(Gender.Male), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Female), FirstName = faker.Name.FirstName(Gender.Female), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Male), FirstName = faker.Name.FirstName(Gender.Male), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Female), FirstName = faker.Name.FirstName(Gender.Female), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Male), FirstName = faker.Name.FirstName(Gender.Male), Age = faker.Random.Int(18, 120) },
+            new() { Id = 0, LastName = faker.Name.LastName(Gender.Female), FirstName = faker.Name.FirstName(Gender.Female), Age = faker.Random.Int(18, 120) },
         };
         /// <summary>Секции</summary>
         public static IEnumerable<Section> Sections { get; } = new Section[]

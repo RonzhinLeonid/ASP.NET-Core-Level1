@@ -11,14 +11,26 @@ namespace WebApplication1.Controllers
     {
         private IEmployeesData _employees;
         private readonly IMapper _mapper;
+        private const int _pageSize = 15;
         public EmployeesController(IEmployeesData employees, IMapper mapper)
         {
             _employees = employees;
             _mapper = mapper;
         }
-        public IActionResult Index()
+
+        public IActionResult Index(int? NumberPage, int PageSize = _pageSize)
         {
-            var employees = _employees.GetAll();
+            IEnumerable<Employee> employees;
+
+            if (NumberPage is { } page && PageSize > 0)
+                employees = _employees.Get(page * PageSize, PageSize);
+            else
+                employees = _employees.GetAll().Take(PageSize);
+
+            ViewBag.PagesCount = PageSize > 0
+                ? (int?)Math.Ceiling(_employees.GetCount() / (double)PageSize)
+                : null!;
+
             return View(employees);
         }
 

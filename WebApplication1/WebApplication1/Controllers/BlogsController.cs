@@ -10,6 +10,7 @@ namespace WebApplication1.Controllers
     {
         private readonly IBlogData _blogData;
         private readonly IMapper _mapper;
+        private const int _countBlogInPage = 3;
 
         public BlogsController(IBlogData BlogData, IMapper mapper)
         {
@@ -17,7 +18,7 @@ namespace WebApplication1.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index(int numberPage, int countBlogInPage = 3)
+        public IActionResult Index(int numberPage, int countBlogInPage = _countBlogInPage)
         {
             IEnumerable<Blog> blogs;
 
