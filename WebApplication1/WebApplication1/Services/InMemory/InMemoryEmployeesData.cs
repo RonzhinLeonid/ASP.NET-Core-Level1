@@ -22,6 +22,25 @@ namespace WebApplication1.Services.InMemory
                 _lastFreeId = 1;
         }
 
+        public int GetCount() => _employees.Count;
+
+        public IEnumerable<Employee> Get(int Skip, int Take) 
+        {
+            IEnumerable<Employee> query = _employees;
+
+            if (Take == 0) return Enumerable.Empty<Employee>();
+
+            if (Skip > 0)
+            {
+                if (Skip > _employees.Count) return Enumerable.Empty<Employee>();
+
+                query = query.Skip(Skip);
+            }
+
+            return query.Take(Take);
+        }
+
+
         public int Add(Employee employee)
         {
             if (_employees is null)

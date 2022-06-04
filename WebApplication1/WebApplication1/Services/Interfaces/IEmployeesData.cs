@@ -5,6 +5,10 @@ namespace WebApplication1.Services.Interfaces
 {
     public interface IEmployeesData
     {
+        int GetCount();
+
+        IEnumerable<Employee> Get(int Skip, int Take);
+
         IEnumerable<Employee> GetAll();
 
         Employee? GetById(int id);

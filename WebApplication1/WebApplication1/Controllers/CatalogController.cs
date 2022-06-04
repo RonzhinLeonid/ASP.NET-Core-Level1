@@ -17,7 +17,7 @@ namespace WebApplication1.Controllers
             _mapper = mapper; 
         }
 
-                public IActionResult Index([Bind("BrandId,SectionId")] ProductFilter filter)
+        public IActionResult Index([Bind("BrandId,SectionId")] ProductFilter filter)
         {
             var products = _productData.GetProducts(filter);
 
