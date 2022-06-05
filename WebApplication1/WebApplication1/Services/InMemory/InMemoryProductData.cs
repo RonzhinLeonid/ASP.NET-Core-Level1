@@ -4,6 +4,7 @@ using WebApplication1.Services.Interfaces;
 
 namespace WebApplication1.Services.InMemory
 {
+    [Obsolete("Используйте InSqlProductData")]
     public class InMemoryProductData : IProductData
     {
         public IEnumerable<Section> GetSections() => TestData.Sections;
@@ -22,5 +23,20 @@ namespace WebApplication1.Services.InMemory
 
             return query;
         }
-    }
+
+		public Section? GetSectionById(int Id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Brand? GetBrandById(int Id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Product? GetProductById(int Id)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

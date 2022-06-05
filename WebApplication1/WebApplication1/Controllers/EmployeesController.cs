@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using DataLayer;
+using DataLayer.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Models;
 using WebApplication1.Services.Interfaces;
@@ -7,6 +9,7 @@ using WebApplication1.ViewModels;
 
 namespace WebApplication1.Controllers
 {
+    [Authorize]
     public class EmployeesController : Controller
     {
         private IEmployeesData _employees;
@@ -34,6 +37,7 @@ namespace WebApplication1.Controllers
             return View(employees);
         }
 
+        [Authorize(Roles = Role.Administrators)]
         public IActionResult Details(int id)
         {
             var employee = _employees.GetById(id);
@@ -42,10 +46,14 @@ namespace WebApplication1.Controllers
 
             return View(employee);
         }
+
+        [Authorize(Roles = Role.Administrators)]
         public IActionResult Create()
         {
             return View("Edit", new EmployeeViewModel());
         }
+
+        [Authorize(Roles = Role.Administrators)]
         public IActionResult Edit(int? id)
         {
             if (id is null)
@@ -59,7 +67,9 @@ namespace WebApplication1.Controllers
 
             return View(view_model);
         }
+
         [HttpPost]
+        [Authorize(Roles = Role.Administrators)]
         public IActionResult Edit(EmployeeViewModel model)
         {
             if (model.LastName == "Qwe" && model.FirstName == "Qwe" && model.Patronymic == "Qwe")
@@ -81,6 +91,7 @@ namespace WebApplication1.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = Role.Administrators)]
         public IActionResult Delete(int id)
         {
             var employee = _employees.GetById((int)id);
@@ -93,6 +104,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Role.Administrators)]
         public IActionResult DeleteConfirmed(int id)
         {
             if (!_employees.Delete(id))

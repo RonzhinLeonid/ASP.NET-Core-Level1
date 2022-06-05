@@ -30,5 +30,14 @@ namespace WebApplication1.Controllers
                    .Select(x => _mapper.Map<Product, ProductViewModel>(x)),
             });
         }
+
+        public IActionResult Details(int Id)
+        {
+            var product = _productData.GetProductById(Id);
+            if (product is null)
+                return NotFound();
+
+            return View(_mapper.Map<Product, ProductViewModel>(product));
+        }
     }
 }

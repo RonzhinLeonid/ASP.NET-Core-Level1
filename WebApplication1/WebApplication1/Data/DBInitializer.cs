@@ -55,6 +55,8 @@ namespace WebApplication1.Data
                 await InitializeBlogssAsync(Cancel);
             }
 
+            await InitializeIdentityAsync(Cancel);
+
             _Logger.LogInformation("Инициализация БД выполнена успешно");
         }
 
@@ -145,6 +147,60 @@ namespace WebApplication1.Data
             await _db.SaveChangesAsync(Cancel);
 
             _Logger.LogInformation("Инициализация БД сотрудников выполнена успешно");
+        }
+
+        private async Task InitializeIdentityAsync(CancellationToken Cancel)
+        {
+            _Logger.LogInformation("Инициализация БД системы Identity...");
+
+            async Task CheckRoleAsync(string RoleName)
+            {
+                if (await _RoleManager.RoleExistsAsync(RoleName))
+                    _Logger.LogInformation("Роль {0} существует в БД", RoleName);
+                else
+                {
+                    _Logger.LogInformation("Роль {0} отсутствует в БД. Создаю...", RoleName);
+                    await _RoleManager.CreateAsync(new Role { Name = RoleName });
+                    _Logger.LogInformation("Роль {0} успешно создана", RoleName);
+                }
+            }
+
+            await CheckRoleAsync(Role.Administrators);
+            await CheckRoleAsync(Role.Users);
+
+            if (await _UserManager.FindByNameAsync(User.Administrator) is null)
+            {
+                _Logger.LogInformation("Пользователь {0} отсутствует в БД. Создаю...", User.Administrator);
+
+                var admin = new User
+                {
+                    UserName = User.Administrator
+                };
+
+                var creation_result = await _UserManager.CreateAsync(admin, User.AdminPassword);
+                if (creation_result.Succeeded)
+                {
+                    _Logger.LogInformation("Пользователь {0} создан. Наделяю его ролью администратора.", User.Administrator);
+
+                    await _UserManager.AddToRoleAsync(admin, Role.Administrators);
+
+                    _Logger.LogInformation("Пользователь {0} наделён ролью администратора.", User.Administrator);
+                }
+                else
+                {
+                    var errors = creation_result.Errors.Select(e => e.Description);
+                    var error_message = string.Join(", ", errors);
+                    _Logger.LogError("Учётная запись {0} не может быть создана. Ошибка: {1}",
+                        User.Administrator,
+                        error_message);
+
+                    throw new InvalidOperationException($"Невозможнос создать {User.Administrator}. Ошибка: {error_message}");
+                }
+            }
+            else
+                _Logger.LogInformation("Пользователь {0} существует", User.Administrator);
+
+            _Logger.LogInformation("Инициализация БД системы Identity выполнена успешно");
         }
     }
 }
