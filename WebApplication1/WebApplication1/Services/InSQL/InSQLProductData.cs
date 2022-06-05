@@ -1,11 +1,11 @@
 ﻿using DataLayer;
-using WebApplication1.Data;
+using Microsoft.EntityFrameworkCore;
 using WebApplication1.Services.Interfaces;
 using WebStore.DAL.Context;
 
 namespace WebApplication1.Services.InSQL
 {
-    public class InSQLProductData : IProductData
+	public class InSQLProductData : IProductData
     {
         private ILogger<InSQLProductData> _logger;
         private readonly WebStoreDB _context;
@@ -18,19 +18,38 @@ namespace WebApplication1.Services.InSQL
 
         public IEnumerable<Section> GetSections() => _context.Sections;
 
+        public Section? GetSectionById(int Id) => _context.Sections
+       .Include(s => s.Products)
+       .FirstOrDefault(s => s.Id == Id);
+
         public IEnumerable<Brand> GetBrands() => _context.Brands;
+
+        public Brand? GetBrandById(int Id) => _context.Brands
+       .Include(b => b.Products)
+       .FirstOrDefault(b => b.Id == Id);
 
         public IEnumerable<Product> GetProducts(ProductFilter? Filter = null)
         {
-            IEnumerable<Product> query = _context.Products;
+            IQueryable<Product> query = _context.Products
+           .Include(p => p.Section)
+           .Include(p => p.Brand);
 
-            if (Filter is { SectionId: { } section_id })
-                query = query.Where(x => x.SectionId == section_id);
-
-            if (Filter is { BrandId: { } brand_id })
-                query = query.Where(x => x.BrandId == brand_id);
+            if (Filter is { Ids: { Length: > 0 } ids })
+                query = query.Where(p => ids.Contains(p.Id));
+            else
+            {
+                if (Filter is { SectionId: { } section_id })
+                    query = query.Where(x => x.SectionId == section_id);
+                if (Filter is { BrandId: { } brand_id })
+                    query = query.Where(x => x.BrandId == brand_id);
+            }
 
             return query;
         }
+
+        public Product? GetProductById(int Id) => _context.Products
+       .Include(p => p.Section)
+       .Include(p => p.Brand)
+       .FirstOrDefault(p => p.Id == Id);
     }
 }

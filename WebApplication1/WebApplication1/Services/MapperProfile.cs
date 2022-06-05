@@ -11,7 +11,10 @@ namespace WebApplication1.Services
         {
             CreateMap<Employee, EmployeeViewModel>().ReverseMap();
             CreateMap<Blog, BlogViewModel>().ReverseMap();
-            CreateMap<Product, ProductViewModel>().ReverseMap();
+            CreateMap<Product, ProductViewModel>()
+                .ForMember("Brand", opt => opt.MapFrom(src => src.Brand.Name))
+                .ForMember("Section", opt => opt.MapFrom(src => src.Section.Name))
+                .ReverseMap();
         }
     }
 }

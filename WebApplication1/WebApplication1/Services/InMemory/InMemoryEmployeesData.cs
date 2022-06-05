@@ -4,6 +4,7 @@ using WebApplication1.Services.Interfaces;
 
 namespace WebApplication1.Services.InMemory
 {
+    [Obsolete("Используйте InSqlEmployeesData")]
     public class InMemoryEmployeesData : IEmployeesData
     {
         private ILogger<InMemoryEmployeesData> _logger;
@@ -13,6 +14,7 @@ namespace WebApplication1.Services.InMemory
         public InMemoryEmployeesData(ILogger<InMemoryEmployeesData> logger)
         {
             _employees = TestData.Employees;
+            _logger = logger;
 
             if (_employees.Any())
             {

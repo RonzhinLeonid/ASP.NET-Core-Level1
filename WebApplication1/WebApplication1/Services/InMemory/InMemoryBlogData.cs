@@ -4,6 +4,7 @@ using WebApplication1.Services.Interfaces;
 
 namespace WebApplication1.Services.InMemory
 {
+    [Obsolete("Используйте InSqlBlogData")]
     public class InMemoryBlogData : IBlogData
     {
         private ILogger<InMemoryBlogData> _logger;

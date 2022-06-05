@@ -1,14 +1,18 @@
 ﻿@model IEnumerable<DataLayer.Employee>
+@using DataLayer.Identity
 @{
     var pages_count = (int?)ViewBag.PagesCount;
 }
 
 <div class="container"
 	<h3></h3>
-	<p>
-        <a asp-action="Create" class="btn btn-default">Создать</a>
-        <a asp-action="Edit" class="btn btn-default">Создать2</a>
-    </p>
+	@if (User.IsInRole(Role.Administrators))
+    {
+		<p>
+			<a asp-action="Create" class="btn btn-default">Создать</a>
+			<a asp-action="Edit" class="btn btn-default">Создать2</a>
+		</p>
+	}
 	@if (Model.Any())
     {
 		
@@ -28,11 +32,14 @@
 				@foreach (var employee in Model)
 				{
 					<tr>
-						<td>
-							<form asp-action="DeleteConfirmed" asp-route-Id="@employee.Id">
+						@if (User.IsInRole(Role.Administrators))
+						{
+							<td>
+								<form asp-action="DeleteConfirmed" asp-route-Id="@employee.Id">
 								<input type="submit" value="X" class="btn-sm btn-danger"/>
-							</form>
-						</td>
+								</form>
+							</td>
+						}
 						<td>@employee.Id</td>
 						<td>
 							<a asp-controller="Employees" asp-action="Details" asp-route-Id="@employee.Id">
@@ -42,16 +49,19 @@
 						<td>@employee.FirstName</td>
 						<td>@employee.Patronymic</td>
 						<td>@employee.Age</td>
-						<td>
-							<a asp-action="Edit" asp-route-Id="@employee.Id"
+						@if (User.IsInRole(Role.Administrators))
+						{
+							<td>
+								<a asp-action="Edit" asp-route-Id="@employee.Id"
 							   class="btn-sm btn-default">
-								<i class="fa fa-edit"></i>
-							</a>
-							<a asp-action="Delete" asp-route-Id="@employee.Id"
+									<i class="fa fa-edit"></i>
+								</a>
+								<a asp-action="Delete" asp-route-Id="@employee.Id"
 							   class="btn-sm btn-danger">
-								<i class="fa fa-times"></i>
-							</a>
-						</td>
+									<i class="fa fa-times"></i>
+								</a>
+							</td>
+						}
 					</tr>
 				}
 			</tbody>

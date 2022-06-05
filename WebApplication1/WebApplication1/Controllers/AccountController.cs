@@ -1,11 +1,13 @@
 ﻿using DataLayer.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.ViewModels;
 
 namespace WebApplication1.Controllers
 {
-	public class AccountController : Controller
+    [Authorize]
+    public class AccountController : Controller
 	{
         private readonly UserManager<User> _UserManager;
         private readonly SignInManager<User> _SignInManager;
@@ -21,10 +23,12 @@ namespace WebApplication1.Controllers
             _Logger = Logger;
         }
 
+        [AllowAnonymous]
         public IActionResult Register() => View(new RegisterUserViewModel());
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterUserViewModel Model)
         {
             if (!ModelState.IsValid)
@@ -55,10 +59,12 @@ namespace WebApplication1.Controllers
             return View(Model);
         }
 
+        [AllowAnonymous]
         public IActionResult Login(string? ReturnUrl) => View(new LoginViewModel { ReturnUrl = ReturnUrl });
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel Model)
         {
             if (!ModelState.IsValid)

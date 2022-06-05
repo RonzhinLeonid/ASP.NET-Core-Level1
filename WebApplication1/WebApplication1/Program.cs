@@ -8,6 +8,7 @@ using WebApplication1.Services.Interfaces;
 using WebApplication1.Services.InSQL;
 using DataLayer.Identity;
 using Microsoft.AspNetCore.Identity;
+using WebApplication1.Services.InCookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,6 +57,7 @@ services.ConfigureApplicationCookie(opt =>
 services.AddScoped<IEmployeesData, InSQLEmployeesData>();
 services.AddScoped<IProductData, InSQLProductData>();
 services.AddScoped<IBlogData, InSQLBlogData>();
+services.AddScoped<ICartService, InCookiesCartService>();
 
 var mapperConfiguration = new MapperConfiguration(mp => mp.AddProfile(new MapperProfile()));
 var mapper = mapperConfiguration.CreateMapper();
