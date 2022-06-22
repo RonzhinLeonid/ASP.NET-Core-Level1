@@ -1,11 +1,11 @@
-﻿using DataLayer;
+﻿using ContextDB.DAL;
+using DataLayer;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Services.Interfaces;
-using WebStore.DAL.Context;
 
 namespace WebApplication1.Services.InSQL
 {
-	public class InSQLProductData : IProductData
+    public class InSQLProductData : IProductData
     {
         private ILogger<InSQLProductData> _logger;
         private readonly WebStoreDB _context;

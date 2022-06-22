@@ -1,20 +1,42 @@
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using WebStore.DAL.Context;
-using WebApplication1.Data;
-using WebApplication1.Services;
-using WebApplication1.Services.Interfaces;
-//using WebApplication1.Services.InMemory;
-using WebApplication1.Services.InSQL;
+using ContextDB.DAL;
 using DataLayer.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using WebApplication1.Data;
+using WebApplication1.Infrastructure.Conventions;
+using WebApplication1.Services;
 using WebApplication1.Services.InCookies;
+//using WebApplication1.Services.InMemory;
+using WebApplication1.Services.InSQL;
+using WebApplication1.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var config = builder.Configuration;
 var services = builder.Services;
-// Add services to the container.
-services.AddControllersWithViews();
+
+var db_type = config["DB:Type"];
+var db_connection_string = config.GetConnectionString(db_type);
+
+switch (db_type)
+{
+    case "SqlServer":
+        services.AddDbContext<WebStoreDB>(opt => opt.UseSqlServer(db_connection_string, o => o.MigrationsAssembly("WebStore.DAL")));
+        break;
+    case "Sqlite":
+        services.AddDbContext<WebStoreDB>(opt => opt.UseSqlite(db_connection_string, o => o.MigrationsAssembly("WebStore.DAL.Sqlite")));
+        break;
+}
+//services.AddDbContext<ApplicationDataContext>(options =>
+//{
+//    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+//});
+//services.AddDbContext<WebStoreDB>(options =>
+//{
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
+//});
+services.AddScoped<DbInitializer>();
 
 services.AddIdentity<User, Role>(/*opt => { opt... }*/)
    .AddEntityFrameworkStores<WebStoreDB>()
@@ -56,23 +78,18 @@ services.ConfigureApplicationCookie(opt =>
 //services.AddScoped<IBlogData, InMemoryBlogData>();
 services.AddScoped<IEmployeesData, InSQLEmployeesData>();
 services.AddScoped<IProductData, InSQLProductData>();
+services.AddScoped<IOrderService, SqlOrderService>();
 services.AddScoped<IBlogData, InSQLBlogData>();
 services.AddScoped<ICartService, InCookiesCartService>();
+
+services.AddControllersWithViews(opt =>
+{
+    opt.Conventions.Add(new AddAreaToControllerConversation());
+});
 
 var mapperConfiguration = new MapperConfiguration(mp => mp.AddProfile(new MapperProfile()));
 var mapper = mapperConfiguration.CreateMapper();
 services.AddSingleton(mapper);
-
-
-//services.AddDbContext<ApplicationDataContext>(options =>
-//{
-//    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-//});
-services.AddDbContext<WebStoreDB>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
-});
-services.AddScoped<DbInitializer>();
 
 var app = builder.Build();
 
@@ -80,8 +97,8 @@ using (var scope = app.Services.CreateScope())
 {
     var db_initializer = scope.ServiceProvider.GetRequiredService<DbInitializer>();
     await db_initializer.InitializeAsync(
-        RemoveBefore: app.Configuration.GetValue("DbRecreate", false),
-        AddTestData: app.Configuration.GetValue("DbAddTestData", false));
+        RemoveBefore: app.Configuration.GetValue("DB:Recreate", false),
+        AddTestData: app.Configuration.GetValue("DB:AddTestData", false));
 }
 
 //app.UseHttpsRedirection();
@@ -100,8 +117,16 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllerRoute(
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+      name: "areas",
+      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    );
+
+    app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+});
 
 app.Run();

@@ -1,9 +1,9 @@
-﻿@model CartViewModel
+﻿@model CartOrderViewModel
 @{
     ViewBag.Title = "Корзина";
 }
 
-@if (Model.Items.Any())
+@if (Model.Cart.Items.Any())
 {
 	<table class="table table-condensed">
 		<thead>
@@ -17,11 +17,11 @@
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (var (product, quantity) in Model.Items)
+			@foreach (var (product, quantity) in Model.Cart.Items)
             {
                 <tr>
                     <td class="cart_product">
-                        <a href=""><img src="images/shop/@product.ImageUrl" alt="@product.Name"></a>
+                        <a href=""><img src="images/shop/@product.ImageUrl" alt="@product.Name" height="100"></a>
                     </td>
                     <td class="cart_description">
                         <h4><a href="">@product.Name</a></h4>

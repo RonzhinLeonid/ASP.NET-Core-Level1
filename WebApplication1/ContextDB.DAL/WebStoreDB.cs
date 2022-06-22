@@ -2,8 +2,9 @@
 using DataLayer.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using DataLayer.Order;
 
-namespace WebStore.DAL.Context
+namespace ContextDB.DAL
 {
     public class WebStoreDB : IdentityDbContext<User, Role, string>
     {
@@ -17,7 +18,7 @@ namespace WebStore.DAL.Context
 
         public DbSet<Blog> Blogs { get; set; } = null!;
 
-
+        public DbSet<Order> Orders { get; set; } = null!;
 
         public WebStoreDB(DbContextOptions<WebStoreDB> options) : base(options)
         {
