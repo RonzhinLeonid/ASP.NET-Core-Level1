@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataLayer\DataLayer.csproj" />
+    <ProjectReference Include="..\ContextDB.DAL\ContextDB.DAL.csproj" />
   </ItemGroup>
 
 </Project>

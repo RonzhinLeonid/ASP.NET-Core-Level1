@@ -1,7 +1,6 @@
-﻿using DataLayer;
-using WebApplication1.Data;
+﻿using ContextDB.DAL;
+using DataLayer;
 using WebApplication1.Services.Interfaces;
-using WebStore.DAL.Context;
 
 namespace WebApplication1.Services.InSQL
 {

@@ -1,11 +1,11 @@
-﻿using DataLayer.Identity;
+﻿using ContextDB.DAL;
+using DataLayer.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using WebStore.DAL.Context;
 
 namespace WebApplication1.Data
 {
-	public class DbInitializer
+    public class DbInitializer
     {
         private readonly WebStoreDB _db;
         private readonly ILogger<DbInitializer> _Logger;
