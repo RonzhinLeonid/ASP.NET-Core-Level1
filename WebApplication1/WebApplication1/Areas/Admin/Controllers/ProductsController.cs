@@ -26,5 +26,6 @@ namespace WebApplication1.Areas.Admin.Controllers
         public IActionResult Edit(int id) => View();
 
         public IActionResult Delete(int id) => View();
+
     }
 }
