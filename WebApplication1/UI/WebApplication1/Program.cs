@@ -6,10 +6,12 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication1.Infrastructure.Conventions;
 //using WebApplication1.Services.InMemory;
 using WebStore.Interfaces.Services;
+using WebStore.Interfaces.TestAPI;
 using WebStore.Services.Data;
 using WebStore.Services.Mapping;
 using WebStore.Services.Services.InCookies;
 using WebStore.Services.Services.InSQL;
+using WebStore.WebAPI.Clients.Values;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,6 +74,8 @@ services.ConfigureApplicationCookie(opt =>
 
     opt.SlidingExpiration = true;
 });
+
+services.AddHttpClient<IValuesService, ValuesClient>(client => client.BaseAddress = new(config["WebAPI"]));
 
 //services.AddScoped<IEmployeesData, InMemoryEmployeesData>();
 //services.AddScoped<IProductData, InMemoryProductData>();
