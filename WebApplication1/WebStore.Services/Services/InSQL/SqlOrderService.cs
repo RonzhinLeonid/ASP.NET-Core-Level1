@@ -1,6 +1,6 @@
 ﻿using ContextDB.DAL;
 using DataLayer.Identity;
-using DataLayer.Order;
+using DataLayer.Orders;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -27,6 +27,7 @@ namespace WebStore.Services.Services.InSQL
             var orders = await _db.Orders
                .Include(order => order.User)
                .Include(order => order.Items)
+               .ThenInclude(item => item.Product)
                .Where(order => order.User.UserName == UserName)
                .ToArrayAsync(Cancel)
                .ConfigureAwait(false);
@@ -39,6 +40,7 @@ namespace WebStore.Services.Services.InSQL
             var order = await _db.Orders
                .Include(order => order.User)
                .Include(order => order.Items)
+               .ThenInclude(item => item.Product)
                .FirstOrDefaultAsync(order => order.Id == Id, Cancel)
                .ConfigureAwait(false);
 

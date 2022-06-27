@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DataLayer.Order
+namespace DataLayer.Orders
 {
     public class OrderItem : Entity
     {

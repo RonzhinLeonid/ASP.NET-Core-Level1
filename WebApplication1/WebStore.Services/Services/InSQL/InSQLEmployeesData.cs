@@ -80,7 +80,11 @@ namespace WebStore.Services.Services.InSQL
                 return false;
             }
 
-            _context.Employees.Update(db_employee);
+            db_employee.LastName = employee.LastName;
+            db_employee.FirstName = employee.FirstName;
+            db_employee.Patronymic = employee.Patronymic;
+            db_employee.Age = employee.Age;
+
             _context.SaveChanges();
 
             _logger.LogInformation("Сотрудник {0} отредактирован", employee);

@@ -1,4 +1,4 @@
-﻿using DataLayer.Order;
+﻿using DataLayer.Orders;
 using ViewModel;
 
 namespace WebStore.Interfaces.Services
