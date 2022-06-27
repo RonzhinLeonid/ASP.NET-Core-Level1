@@ -2,7 +2,7 @@
 using DataLayer.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using DataLayer.Order;
+using DataLayer.Orders;
 
 namespace ContextDB.DAL
 {
