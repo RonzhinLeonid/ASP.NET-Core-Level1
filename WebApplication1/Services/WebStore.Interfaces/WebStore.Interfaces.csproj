@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Common\DataLayer\DataLayer.csproj" />
-    <ProjectReference Include="..\ViewModel\ViewModel.csproj" />
+    <ProjectReference Include="..\..\Common\DataLayer\DataLayer.csproj" />
+    <ProjectReference Include="..\..\Common\ViewModel\ViewModel.csproj" />
   </ItemGroup>
 
 </Project>
