@@ -3,8 +3,9 @@ using System.Net.Http.Json;
 
 namespace WebStore.WebAPI.Clients.Base
 {
-    public abstract class BaseClient
+    public abstract class BaseClient : IDisposable
     {
+        private bool _Disposed;
         protected HttpClient Http { get; }
         protected string Address { get; }
 
@@ -56,6 +57,27 @@ namespace WebStore.WebAPI.Clients.Base
         {
             var response = await Http.DeleteAsync(url, Cancel).ConfigureAwait(false);
             return response;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this); 
+        }
+
+        protected virtual void Dispose(bool Disposing)
+        {
+            if (_Disposed) return;
+            _Disposed = true;
+
+            if (Disposing)
+            {
+                // здесь должны очистить все управляемые ресурсы
+                //Http.Dispose(); 
+                // у этого объекта вызвать метод Dispose() мы права не имеем - не мы его создавали тут!
+            }
+
+            // здесь надо освободить неуправляемые ресурсы
         }
     }
 }

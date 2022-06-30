@@ -1,9 +1,4 @@
 ﻿using DataLayer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WebStore.Interfaces.Services;
 using WebStore.WebAPI.Clients.Base;
 
@@ -12,7 +7,7 @@ namespace WebStore.WebAPI.Clients.Blogs
     public class BlogsClient : BaseClient, IBlogData
     {
         public BlogsClient(HttpClient Client)
-            : base(Client, "api/blogs")
+            : base(Client, WebAPIAddresses.V1.Blogs)
         {
         }
 

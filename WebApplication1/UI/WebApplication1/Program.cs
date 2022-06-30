@@ -1,18 +1,19 @@
 using AutoMapper;
-using ContextDB.DAL;
 using DataLayer.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Polly;
+using Polly.Extensions.Http;
 using WebApplication1.Infrastructure.Conventions;
 //using WebApplication1.Services.InMemory;
 using WebStore.Interfaces.Services;
+using WebStore.Interfaces.Services.Identity;
 using WebStore.Interfaces.TestAPI;
-using WebStore.Services.Data;
 using WebStore.Services.Mapping;
 using WebStore.Services.Services.InCookies;
-using WebStore.Services.Services.InSQL;
 using WebStore.WebAPI.Clients.Blogs;
 using WebStore.WebAPI.Clients.Employees;
+using WebStore.WebAPI.Clients.Identity;
 using WebStore.WebAPI.Clients.Orders;
 using WebStore.WebAPI.Clients.Products;
 using WebStore.WebAPI.Clients.Values;
@@ -22,18 +23,18 @@ var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 var services = builder.Services;
 
-var db_type = config["DB:Type"];
-var db_connection_string = config.GetConnectionString(db_type);
+//var db_type = config["DB:Type"];
+//var db_connection_string = config.GetConnectionString(db_type);
 
-switch (db_type)
-{
-    case "SqlServer":
-        services.AddDbContext<WebStoreDB>(opt => opt.UseSqlServer(db_connection_string, o => o.MigrationsAssembly("WebStore.DAL")));
-        break;
-    case "Sqlite":
-        services.AddDbContext<WebStoreDB>(opt => opt.UseSqlite(db_connection_string, o => o.MigrationsAssembly("WebStore.DAL.Sqlite")));
-        break;
-}
+//switch (db_type)
+//{
+//    case "SqlServer":
+//        services.AddDbContext<WebStoreDB>(opt => opt.UseSqlServer(db_connection_string, o => o.MigrationsAssembly("WebStore.DAL")));
+//        break;
+//    case "Sqlite":
+//        services.AddDbContext<WebStoreDB>(opt => opt.UseSqlite(db_connection_string, o => o.MigrationsAssembly("WebStore.DAL.Sqlite")));
+//        break;
+//}
 //services.AddDbContext<ApplicationDataContext>(options =>
 //{
 //    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -42,11 +43,29 @@ switch (db_type)
 //{
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
 //});
-services.AddScoped<DbInitializer>();
+//services.AddScoped<DbInitializer>();
 
-services.AddIdentity<User, Role>(/*opt => { opt... }*/)
-   .AddEntityFrameworkStores<WebStoreDB>()
+services.AddIdentity<User, Role>()
    .AddDefaultTokenProviders();
+
+services.AddHttpClient("WebStoreAPIIdentity", client =>
+{
+    //client.DefaultRequestHeaders.Add("accept", "application/json");
+    client.BaseAddress = new(config["WebAPI"]);
+})
+   .AddTypedClient<IUsersClient, UsersClient>()
+   .AddTypedClient<IUserStore<User>, UsersClient>()
+   .AddTypedClient<IUserRoleStore<User>, UsersClient>()
+   .AddTypedClient<IUserPasswordStore<User>, UsersClient>()
+   .AddTypedClient<IUserEmailStore<User>, UsersClient>()
+   .AddTypedClient<IUserPhoneNumberStore<User>, UsersClient>()
+   .AddTypedClient<IUserTwoFactorStore<User>, UsersClient>()
+   .AddTypedClient<IUserClaimStore<User>, UsersClient>()
+   .AddTypedClient<IUserLoginStore<User>, UsersClient>()
+   .AddTypedClient<IRolesClient, RolesClient>()
+   .AddTypedClient<IRoleStore<Role>, RolesClient>()
+   .AddPolicyHandler(GetRetryPolicy())
+   .AddPolicyHandler(GetCircuitBreakerPolicy());
 
 services.Configure<IdentityOptions>(opt =>
 {
@@ -84,7 +103,24 @@ services.AddHttpClient("WebStoreApi", client => client.BaseAddress = new(config[
    .AddTypedClient<IEmployeesData, EmployeesClient>()
    .AddTypedClient<IProductData, ProductsClient>()
    .AddTypedClient<IOrderService, OrdersClient>()
-   .AddTypedClient<IBlogData, BlogsClient>();
+   .AddTypedClient<IBlogData, BlogsClient>()
+   .AddPolicyHandler(GetRetryPolicy())
+   .AddPolicyHandler(GetCircuitBreakerPolicy());
+
+static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy(int MaxRetryCount = 5, int MaxJitterTime = 1000)
+{
+    var jitter = new Random();
+    return HttpPolicyExtensions
+       .HandleTransientHttpError()
+       .WaitAndRetryAsync(MaxRetryCount, RetryAttempt =>
+            TimeSpan.FromSeconds(Math.Pow(2, RetryAttempt)) +
+            TimeSpan.FromMilliseconds(jitter.Next(0, MaxJitterTime)));
+}
+
+static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy() =>
+    HttpPolicyExtensions
+       .HandleTransientHttpError()
+       .CircuitBreakerAsync(handledEventsAllowedBeforeBreaking: 5, TimeSpan.FromSeconds(30));
 
 //services.AddScoped<IEmployeesData, InMemoryEmployeesData>();
 //services.AddScoped<IProductData, InMemoryProductData>();
@@ -106,13 +142,13 @@ services.AddSingleton(mapper);
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var db_initializer = scope.ServiceProvider.GetRequiredService<DbInitializer>();
-    await db_initializer.InitializeAsync(
-        RemoveBefore: app.Configuration.GetValue("DB:Recreate", false),
-        AddTestData: app.Configuration.GetValue("DB:AddTestData", false));
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var db_initializer = scope.ServiceProvider.GetRequiredService<DbInitializer>();
+//    await db_initializer.InitializeAsync(
+//        RemoveBefore: app.Configuration.GetValue("DB:Recreate", false),
+//        AddTestData: app.Configuration.GetValue("DB:AddTestData", false));
+//}
 
 //app.UseHttpsRedirection();
 
