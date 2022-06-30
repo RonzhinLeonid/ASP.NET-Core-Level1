@@ -9,7 +9,7 @@ namespace WebStore.WebAPI.Clients.Orders
 {
     public class OrdersClient : BaseClient, IOrderService
     {
-        public OrdersClient(HttpClient client) : base(client, "api/orders") { }
+        public OrdersClient(HttpClient client) : base(client, WebAPIAddresses.V1.Orders) { }
 
 
         public async Task<IEnumerable<Order>> GetUserOrdersAsync(string UserName, CancellationToken Cancel = default)

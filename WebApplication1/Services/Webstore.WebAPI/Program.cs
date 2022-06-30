@@ -1,6 +1,8 @@
 using ContextDB.DAL;
+using DataLayer;
 using DataLayer.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using WebStore.Interfaces.Services;
 using WebStore.Services.Data;
@@ -11,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 var services = builder.Services;
 // Add services to the container.
+
 var db_type = config["DB:Type"];
 var db_connection_string = config.GetConnectionString(db_type);
 
@@ -47,31 +50,59 @@ services.Configure<IdentityOptions>(opt =>
     opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
 });
 
-services.ConfigureApplicationCookie(opt =>
-{
-    opt.Cookie.Name = "GB.WebStore";
-    opt.Cookie.HttpOnly = true;
+//services.ConfigureApplicationCookie(opt =>
+//{
+//    opt.Cookie.Name = "GB.WebStore";
+//    opt.Cookie.HttpOnly = true;
 
-    opt.ExpireTimeSpan = TimeSpan.FromDays(10);
+//    opt.ExpireTimeSpan = TimeSpan.FromDays(10);
 
-    opt.LoginPath = "/Account/Login";
-    opt.LogoutPath = "/Account/Logout";
-    opt.AccessDeniedPath = "/Account/AccessDenied";
+//    opt.LoginPath = "/Account/Login";
+//    opt.LogoutPath = "/Account/Logout";
+//    opt.AccessDeniedPath = "/Account/AccessDenied";
 
-    opt.SlidingExpiration = true;
-});
+//    opt.SlidingExpiration = true;
+//});
 
 services.AddScoped<IEmployeesData, InSQLEmployeesData>();
 services.AddScoped<IProductData, InSQLProductData>();
 services.AddScoped<IOrderService, SqlOrderService>();
 services.AddScoped<IBlogData, InSQLBlogData>();
 
-builder.Services.AddControllers();
+services.AddControllers(opt =>
+{
+    opt.InputFormatters.Add(new XmlSerializerInputFormatter(opt));
+    opt.OutputFormatters.Add(new XmlSerializerOutputFormatter());
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+services.AddSwaggerGen(opt =>
+{
+    var webstore_webapi_xml = Path.ChangeExtension(Path.GetFileName(typeof(Program).Assembly.Location), ".xml");
+    var dataLayer_xml = Path.ChangeExtension(Path.GetFileName(typeof(Product).Assembly.Location), ".xml");
+
+    const string debug_path = "bin/Debug/net6.0";
+
+    if (File.Exists(webstore_webapi_xml))
+        opt.IncludeXmlComments(webstore_webapi_xml);
+    else if (File.Exists(Path.Combine(debug_path, webstore_webapi_xml)))
+        opt.IncludeXmlComments(Path.Combine(debug_path, webstore_webapi_xml));
+
+    if (File.Exists(dataLayer_xml))
+        opt.IncludeXmlComments(dataLayer_xml);
+    else if (File.Exists(Path.Combine(debug_path, dataLayer_xml)))
+        opt.IncludeXmlComments(Path.Combine(debug_path, dataLayer_xml));
+});
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db_initializer = scope.ServiceProvider.GetRequiredService<DbInitializer>();
+    await db_initializer.InitializeAsync(
+        RemoveBefore: app.Configuration.GetValue("DB:Recreate", false),
+        AddTestData: app.Configuration.GetValue("DB:AddTestData", false));
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
