@@ -4,11 +4,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Polly;
 using Polly.Extensions.Http;
+using Serilog;
+using Serilog.Events;
+using Serilog.Formatting.Json;
 using WebApplication1.Infrastructure.Conventions;
 //using WebApplication1.Services.InMemory;
 using WebStore.Interfaces.Services;
 using WebStore.Interfaces.Services.Identity;
 using WebStore.Interfaces.TestAPI;
+using WebStore.Logging;
 using WebStore.Services.Mapping;
 using WebStore.Services.Services.InCookies;
 using WebStore.WebAPI.Clients.Blogs;
@@ -20,30 +24,21 @@ using WebStore.WebAPI.Clients.Values;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.AddLog4Net();
+
+builder.Host.UseSerilog((host, log) => log.ReadFrom.Configuration(host.Configuration)
+   .MinimumLevel.Debug()
+   .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+   .Enrich.FromLogContext()
+   .WriteTo.Console(
+        outputTemplate: "[{Timestamp:HH:mm:ss.fff} {Level:u3}]{SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}")
+   .WriteTo.RollingFile($@".\Logs\WebStore[{DateTime.Now:yyyy-MM-ddTHH-mm-ss}].log")
+   .WriteTo.File(new JsonFormatter(",\r\n", true), $@".\Logs\WebStore[{DateTime.Now:yyyy-MM-ddTHH-mm-ss}].log.json")
+   .WriteTo.Seq(host.Configuration["SeqAddress"])
+);
+
 var config = builder.Configuration;
 var services = builder.Services;
-
-//var db_type = config["DB:Type"];
-//var db_connection_string = config.GetConnectionString(db_type);
-
-//switch (db_type)
-//{
-//    case "SqlServer":
-//        services.AddDbContext<WebStoreDB>(opt => opt.UseSqlServer(db_connection_string, o => o.MigrationsAssembly("WebStore.DAL")));
-//        break;
-//    case "Sqlite":
-//        services.AddDbContext<WebStoreDB>(opt => opt.UseSqlite(db_connection_string, o => o.MigrationsAssembly("WebStore.DAL.Sqlite")));
-//        break;
-//}
-//services.AddDbContext<ApplicationDataContext>(options =>
-//{
-//    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-//});
-//services.AddDbContext<WebStoreDB>(options =>
-//{
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
-//});
-//services.AddScoped<DbInitializer>();
 
 services.AddIdentity<User, Role>()
    .AddDefaultTokenProviders();
@@ -122,13 +117,6 @@ static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy() =>
        .HandleTransientHttpError()
        .CircuitBreakerAsync(handledEventsAllowedBeforeBreaking: 5, TimeSpan.FromSeconds(30));
 
-//services.AddScoped<IEmployeesData, InMemoryEmployeesData>();
-//services.AddScoped<IProductData, InMemoryProductData>();
-//services.AddScoped<IBlogData, InMemoryBlogData>();
-//services.AddScoped<IEmployeesData, InSQLEmployeesData>();
-//services.AddScoped<IProductData, InSQLProductData>();
-//services.AddScoped<IOrderService, SqlOrderService>();
-//services.AddScoped<IBlogData, InSQLBlogData>();
 services.AddScoped<ICartService, InCookiesCartService>();
 
 services.AddControllersWithViews(opt =>
@@ -141,18 +129,6 @@ var mapper = mapperConfiguration.CreateMapper();
 services.AddSingleton(mapper);
 
 var app = builder.Build();
-
-//using (var scope = app.Services.CreateScope())
-//{
-//    var db_initializer = scope.ServiceProvider.GetRequiredService<DbInitializer>();
-//    await db_initializer.InitializeAsync(
-//        RemoveBefore: app.Configuration.GetValue("DB:Recreate", false),
-//        AddTestData: app.Configuration.GetValue("DB:AddTestData", false));
-//}
-
-//app.UseHttpsRedirection();
-
-//app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
 {
