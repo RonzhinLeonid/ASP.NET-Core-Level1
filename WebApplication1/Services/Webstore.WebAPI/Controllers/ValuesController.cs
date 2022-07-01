@@ -22,6 +22,8 @@ namespace Webstore.WebAPI.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
+            throw new Exception(); // для тестов отлова исключений
+
             if (__Values.Count == 0)
                 return NoContent();
 

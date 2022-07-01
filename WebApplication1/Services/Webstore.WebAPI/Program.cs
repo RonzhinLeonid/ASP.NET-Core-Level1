@@ -4,11 +4,15 @@ using DataLayer.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
+using Webstore.WebAPI.Infrastructure.Middleware;
 using WebStore.Interfaces.Services;
+using WebStore.Logging;
 using WebStore.Services.Data;
 using WebStore.Services.Services.InSQL;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.AddLog4Net();
 
 var config = builder.Configuration;
 var services = builder.Services;
@@ -112,6 +116,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandler>();
 
 app.MapControllers();
 
