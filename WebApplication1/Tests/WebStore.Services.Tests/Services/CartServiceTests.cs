@@ -16,7 +16,6 @@ namespace WebStore.Services.Tests.Services
         private Cart _Cart = null!;
         private Mock<IProductData> _ProductDataMock = null!;
         private Mock<ICartStore> _CartStoreMock = null!;
-        private Mock<IMapper> _MapperMock = null!;
 
         private ICartService _CartService = null!;
 
@@ -34,8 +33,8 @@ namespace WebStore.Services.Tests.Services
 
             _ProductDataMock = new Mock<IProductData>();
             _ProductDataMock
-               .Setup(c => c.GetProducts(It.IsAny<ProductFilter>()))
-               .Returns(new[]
+                .Setup(c => c.GetProducts(It.IsAny<ProductFilter>()))
+                .Returns(new[]
                 {
                 new Product
                 {
@@ -74,9 +73,8 @@ namespace WebStore.Services.Tests.Services
 
             _CartStoreMock = new Mock<ICartStore>();
             _CartStoreMock.Setup(c => c.Cart).Returns(_Cart);
-            
 
-            _CartService = new CartService(_ProductDataMock.Object, _CartStoreMock.Object, _MapperMock.Object);
+            _CartService = new CartService(_ProductDataMock.Object, _CartStoreMock.Object);
         }
 
 

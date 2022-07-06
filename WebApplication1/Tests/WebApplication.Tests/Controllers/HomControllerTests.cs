@@ -20,7 +20,7 @@ namespace WebApplication.Tests.Controllers
         {
             var mapper_mock = new Mock<IMapper>();
 
-            var controller = new HomeController(null!, mapper_mock.Object);
+            var controller = new HomeController(null!);
 
             var result = controller.Contacts();
 
@@ -34,7 +34,7 @@ namespace WebApplication.Tests.Controllers
         {
             var mapper_mock = new Mock<IMapper>();
 
-            var controller = new HomeController(null!, mapper_mock.Object);
+            var controller = new HomeController(null!);
 
             var result = controller.Error404();
 
@@ -65,9 +65,8 @@ namespace WebApplication.Tests.Controllers
         [TestMethod]
         public void Index_returns_with_ViewBag_with_products()
         {
-            var mapper_mock = new Mock<IMapper>();
             var products = Enumerable.Range(1, 100).Select(id => new Product { Id = id, Name = $"Product-{id}", Section = new() { Name = "Section" } });
-            var controller = new HomeController(null!, mapper_mock.Object);
+            var controller = new HomeController(null!);
 
             var product_data_mock = new Mock<IProductData>();
             product_data_mock.Setup(s => s.GetProducts(It.IsAny<ProductFilter>()))

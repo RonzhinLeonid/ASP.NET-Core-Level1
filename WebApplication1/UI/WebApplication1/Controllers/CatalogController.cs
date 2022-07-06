@@ -3,6 +3,7 @@ using DataLayer;
 using Microsoft.AspNetCore.Mvc;
 using ViewModel;
 using WebStore.Interfaces.Services;
+using WebStore.Services.Mapping;
 
 namespace WebApplication1.Controllers
 {
@@ -27,7 +28,7 @@ namespace WebApplication1.Controllers
                 SectionId = filter.SectionId,
                 Products = products
                    .OrderBy(p => p.Order)
-                   .Select(x => _mapper.Map<Product, ProductViewModel>(x)),
+                   .Select(x => _mapper.Map<ProductViewModel>(x)),
             });
         }
 
@@ -37,7 +38,7 @@ namespace WebApplication1.Controllers
             if (product is null)
                 return NotFound();
 
-            return View(_mapper.Map<Product, ProductViewModel>(product));
+            return View(product.ToView());
         }
     }
 }

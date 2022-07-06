@@ -1,30 +1,27 @@
-﻿using AutoMapper;
-using DataLayer;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using ViewModel;
 using WebApplication1.Models;
 using WebStore.Interfaces.Services;
+using WebStore.Services.Mapping;
 
 namespace WebApplication1.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IMapper _mapper;
 
-        public HomeController(ILogger<HomeController> logger, IMapper mapper)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _mapper = mapper;
         }
 
         public IActionResult Index([FromServices] IProductData ProductData)
         {
-            var products = ProductData.GetProducts()
-               .OrderBy(p => p.Order)
-               .Take(6)
-               .Select(x => _mapper.Map<Product, ProductViewModel>(x));
+            var products = ProductData
+            .GetProducts()
+            .OrderBy(p => p.Order)
+            .Take(6)
+            .ToView();
 
             ViewBag.Products = products;
 

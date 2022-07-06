@@ -2,6 +2,7 @@
 using DataLayer;
 using ViewModel;
 using WebStore.Interfaces.Services;
+using WebStore.Services.Mapping;
 
 namespace WebStore.Services.Services
 {
@@ -9,13 +10,11 @@ namespace WebStore.Services.Services
     {
         private readonly IProductData _ProductData;
         private readonly ICartStore _CartStore;
-        private readonly IMapper _mapper;
 
-        public CartService(IProductData ProductData, ICartStore CartStore, IMapper mapper)
+        public CartService(IProductData ProductData, ICartStore CartStore)
         {
             _ProductData = ProductData;
             _CartStore = CartStore;
-            _mapper = mapper;
         }
 
         public void Add(int Id)
@@ -55,7 +54,7 @@ namespace WebStore.Services.Services
                 Ids = cart.Items.Select(item => item.ProductId).ToArray(),
             });
 
-            var products_views = products.Select(x => _mapper.Map<Product, ProductViewModel>(x)).ToDictionary(p => p.Id);
+            var products_views = products.ToView().ToDictionary(p => p.Id);
 
             return new()
             {
