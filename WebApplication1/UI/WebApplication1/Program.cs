@@ -14,6 +14,7 @@ using WebStore.Interfaces.Services.Identity;
 using WebStore.Interfaces.TestAPI;
 using WebStore.Logging;
 using WebStore.Services.Mapping;
+using WebStore.Services.Services;
 using WebStore.Services.Services.InCookies;
 using WebStore.WebAPI.Clients.Blogs;
 using WebStore.WebAPI.Clients.Employees;
@@ -117,7 +118,8 @@ static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy() =>
        .HandleTransientHttpError()
        .CircuitBreakerAsync(handledEventsAllowedBeforeBreaking: 5, TimeSpan.FromSeconds(30));
 
-services.AddScoped<ICartService, InCookiesCartService>();
+services.AddScoped<ICartStore, InCookiesCartStore>();
+services.AddScoped<ICartService, CartService>();
 
 services.AddControllersWithViews(opt =>
 {

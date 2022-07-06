@@ -34,6 +34,9 @@ namespace WebApplication1.Controllers
         [Authorize, HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Checkout(OrderViewModel OrderModel, [FromServices] IOrderService OrderService)
         {
+            if (OrderModel is null)
+                throw new ArgumentNullException(nameof(OrderModel));
+
             if (!ModelState.IsValid)
                 return View(nameof(Index), new CartOrderViewModel
                 {
