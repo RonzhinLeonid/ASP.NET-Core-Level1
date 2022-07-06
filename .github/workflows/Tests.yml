@@ -16,10 +16,10 @@ jobs:
         dotnet-version: 6.0.x
         
     - name: Restore dependencies
-      run: dotnet restore WebApplication1.sln
+      run: dotnet restore
       
     - name: Build
-      run: dotnet build WebApplication1.sln --no-restore
+      run: dotnet build --no-restore
       
     - name: Test
       run: dotnet test WebApplication1.sln --no-build 
