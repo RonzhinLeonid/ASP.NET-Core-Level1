@@ -31,10 +31,10 @@
     //  "library": "gmaps.js@0.4.9",
     //  "destination": "wwwroot/lib/gmaps.js/"
     //},
-    {
-      "provider": "cdnjs",
-      "library": "html5shiv@3.6.2",
-      "destination": "wwwroot/lib/html5shiv/"
-    }
+    //{
+    //  "provider": "cdnjs",
+    //  "library": "html5shiv@3.6.2",
+    //  "destination": "wwwroot/lib/html5shiv/"
+    //}
   ]
 }
