@@ -23,7 +23,7 @@ namespace WebStore.Services.Services.InSQL
        .Include(s => s.Products)
        .FirstOrDefault(s => s.Id == Id);
 
-        public IEnumerable<Brand> GetBrands() => _context.Brands;
+        public IEnumerable<Brand> GetBrands() => _context.Brands.Include(b => b.Products);
 
         public Brand? GetBrandById(int Id) => _context.Brands
        .Include(b => b.Products)
