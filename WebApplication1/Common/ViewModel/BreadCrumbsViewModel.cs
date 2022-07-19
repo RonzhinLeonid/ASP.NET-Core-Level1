@@ -1,4 +1,6 @@
-﻿namespace DataLayer
+﻿using DataLayer;
+
+namespace ViewModel
 {
     public class BreadCrumbsViewModel
     {

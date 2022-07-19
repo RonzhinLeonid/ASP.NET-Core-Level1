@@ -1,6 +1,6 @@
 ﻿using ContextDB.DAL;
-using DataLayer.DTO.Identity;
 using DataLayer.Identity;
+using DTO.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;

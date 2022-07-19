@@ -1,6 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using DataLayer;
+using System.Diagnostics.CodeAnalysis;
 
-namespace DataLayer.DTO
+namespace DTO
 {
     public static class ProductDTOMapper
     {

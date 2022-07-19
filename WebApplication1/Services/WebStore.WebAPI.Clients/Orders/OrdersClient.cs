@@ -1,5 +1,5 @@
-﻿using DataLayer.DTO;
-using DataLayer.Orders;
+﻿using DataLayer.Orders;
+using DTO;
 using System.Net.Http.Json;
 using ViewModel;
 using WebStore.Interfaces.Services;

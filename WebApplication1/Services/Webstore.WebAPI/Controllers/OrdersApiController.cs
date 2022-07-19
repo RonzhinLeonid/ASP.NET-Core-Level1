@@ -1,4 +1,4 @@
-﻿using DataLayer.DTO;
+﻿using DTO;
 using Microsoft.AspNetCore.Mvc;
 using WebStore.Interfaces.Services;
 

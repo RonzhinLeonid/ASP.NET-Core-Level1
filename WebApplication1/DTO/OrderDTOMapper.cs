@@ -1,8 +1,9 @@
-﻿using DataLayer.Orders;
+﻿using DataLayer;
+using DataLayer.Orders;
 using System.Diagnostics.CodeAnalysis;
 using ViewModel;
 
-namespace DataLayer.DTO
+namespace DTO
 {
     public static class OrderDTOMapper
     {

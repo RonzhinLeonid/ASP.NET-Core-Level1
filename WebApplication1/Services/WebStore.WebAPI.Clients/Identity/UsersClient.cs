@@ -1,5 +1,5 @@
-﻿using DataLayer.DTO.Identity;
-using DataLayer.Identity;
+﻿using DataLayer.Identity;
+using DTO.Identity;
 using Microsoft.AspNetCore.Identity;
 using System.Net.Http.Json;
 using System.Security.Claims;

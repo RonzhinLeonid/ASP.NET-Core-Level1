@@ -1,6 +1,6 @@
 ﻿using DataLayer.Identity;
 
-namespace DataLayer.DTO.Identity
+namespace DTO.Identity
 {
     public abstract class UserDTO
     {

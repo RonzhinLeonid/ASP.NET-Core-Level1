@@ -1,5 +1,5 @@
 ﻿using DataLayer;
-using DataLayer.DTO;
+using DTO;
 using System.Net;
 using System.Net.Http.Json;
 using WebStore.Interfaces.Services;

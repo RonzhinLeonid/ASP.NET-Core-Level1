@@ -1,5 +1,5 @@
-﻿using DataLayer;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using ViewModel;
 using WebStore.Interfaces.Services;
 
 namespace WebApplication1.Components
