@@ -28,6 +28,7 @@
 		<ProjectReference Include="..\..\Common\WebStore.Logging\WebStore.Logging.csproj" />
 		<ProjectReference Include="..\..\Data\WebStore.DAL.Sqlite\WebStore.DAL.Sqlite.csproj" />
 		<ProjectReference Include="..\..\Data\WebStore.DAL\WebStore.DAL.csproj" />
+		<ProjectReference Include="..\..\DTO\DTO.csproj" />
 		<ProjectReference Include="..\WebStore.Services\WebStore.Services.csproj" />
 	</ItemGroup>
 

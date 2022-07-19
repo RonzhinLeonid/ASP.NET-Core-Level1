@@ -1,4 +1,4 @@
-﻿namespace DataLayer.DTO.Identity
+﻿namespace DTO.Identity
 {
     public class SetLockoutDTO : UserDTO
     {

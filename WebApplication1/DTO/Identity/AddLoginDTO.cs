@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace DataLayer.DTO.Identity
+namespace DTO.Identity
 {
     public class AddLoginDTO : UserDTO
     {

@@ -1,4 +1,4 @@
-﻿namespace DataLayer.DTO
+﻿namespace DTO
 {
     public class OrderItemDTO
     {

@@ -1,6 +1,6 @@
-﻿namespace DataLayer.DTO
+﻿namespace DTO
 {
-    public class SectionDTO
+    public class BrandDTO
     {
         public int Id { get; init; }
 
@@ -8,6 +8,6 @@
 
         public int Order { get; init; }
 
-        public int? ParentId { get; init; }
+        public int ProductsCount { get; init; }
     }
 }
