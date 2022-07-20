@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using DataLayer;
-using ViewModel;
+﻿using ViewModel;
 using WebStore.Interfaces.Services;
 using WebStore.Services.Mapping;
 
@@ -54,7 +52,7 @@ namespace WebStore.Services.Services
                 Ids = cart.Items.Select(item => item.ProductId).ToArray(),
             });
 
-            var products_views = products.ToView().ToDictionary(p => p.Id);
+            var products_views = products.Items.ToView().ToDictionary(p => p!.Id);
 
             return new()
             {

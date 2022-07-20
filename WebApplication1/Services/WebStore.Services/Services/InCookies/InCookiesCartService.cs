@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 using ViewModel;
 using WebStore.Interfaces.Services;
+using WebStore.Services.Mapping;
 
 namespace WebStore.Services.Services.InCookies
 {
@@ -12,7 +13,6 @@ namespace WebStore.Services.Services.InCookies
         private readonly IHttpContextAccessor _HttpContextAccessor;
         private readonly IProductData _ProductData;
         private readonly string _CartName;
-        private readonly IMapper _mapper;
 
         private Cart Cart
         {
@@ -41,12 +41,10 @@ namespace WebStore.Services.Services.InCookies
             cookies.Append(_CartName, cart);
         }
 
-        public InCookiesCartService(IHttpContextAccessor HttpContextAccessor, IProductData ProductData, IMapper mapper)
+        public InCookiesCartService(IHttpContextAccessor HttpContextAccessor, IProductData ProductData)
         {
-
             _HttpContextAccessor = HttpContextAccessor;
             _ProductData = ProductData;
-            _mapper = mapper;
 
             var user = HttpContextAccessor.HttpContext!.User;
             var user_name = user.Identity!.IsAuthenticated ? $"-{user.Identity.Name}" : null;
@@ -91,7 +89,7 @@ namespace WebStore.Services.Services.InCookies
                 Ids = cart.Items.Select(item => item.ProductId).ToArray(),
             });
 
-            var products_views = products.Select(x => _mapper.Map<Product, ProductViewModel>(x)).ToDictionary(p => p.Id);
+            var products_views = products.Items.ToView().ToDictionary(p => p!.Id);
 
             return new()
             {

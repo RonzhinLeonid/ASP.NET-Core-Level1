@@ -6,6 +6,7 @@ using ViewModel;
 using WebApplication1.Controllers;
 using WebStore.Interfaces.Services;
 using Assert = Xunit.Assert;
+using Microsoft.Extensions.Configuration;
 
 namespace WebApplication.Tests.Controllers
 {
@@ -55,8 +56,9 @@ namespace WebApplication.Tests.Controllers
                });
 
             var mapper_mock = new Mock<IMapper>();
+            var configuration_mock = new Mock<IConfiguration>();
 
-            var controller = new CatalogController(product_data_mock.Object, mapper_mock.Object);
+            var controller = new CatalogController(product_data_mock.Object, mapper_mock.Object, configuration_mock.Object);
 
             var result = controller.Details(expected_id);
 

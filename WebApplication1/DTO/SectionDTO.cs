@@ -9,5 +9,7 @@
         public int Order { get; init; }
 
         public int? ParentId { get; init; }
+
+        public IEnumerable<int> ProductIds { get; init; } = null!;
     }
 }

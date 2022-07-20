@@ -35,6 +35,7 @@ namespace WebApplication1.Components
                {
                    Id = s.Id,
                    Name = s.Name,
+                   ProductsCount = s.Products.Count,
                })
                .ToArray();
 
@@ -50,6 +51,7 @@ namespace WebApplication1.Components
                     {
                         Id = child_section.Id,
                         Name = child_section.Name,
+                        ProductsCount = child_section.Products.Count,
                     });
                 }
             }

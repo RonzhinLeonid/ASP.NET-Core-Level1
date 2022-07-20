@@ -13,7 +13,7 @@ namespace DTO
                 Id = brand.Id,
                 Name = brand.Name,
                 Order = brand.Order,
-                ProductsCount = brand.Products.Count,
+                ProductIds = brand.Products.Select(p => p.Id),
             };
 
         [return: NotNullIfNotNull("brand")]
@@ -24,7 +24,7 @@ namespace DTO
                 Id = brand.Id,
                 Name = brand.Name,
                 Order = brand.Order,
-                Products = new Product[brand.ProductsCount],
+                Products = brand.ProductIds.Select(id => new Product { Id = id }).ToArray(),
             };
 
         public static IEnumerable<BrandDTO> ToDTO(this IEnumerable<Brand>? brands) => brands?.Select(ToDTO)!;

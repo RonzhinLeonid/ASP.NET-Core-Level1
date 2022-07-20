@@ -7,5 +7,7 @@
         public string Name { get; set; } = null!;
 
         public List<SectionViewModel> ChildSections { get; set; } = new();
+
+        public int ProductsCount { get; set; }
     }
 }

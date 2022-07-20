@@ -14,6 +14,7 @@ namespace DTO
                 Name = section.Name,
                 Order = section.Order,
                 ParentId = section.ParentId,
+                ProductIds = section.Products.Select(p => p.Id),
             };
 
         [return: NotNullIfNotNull("section")]
@@ -25,6 +26,7 @@ namespace DTO
                 Name = section.Name,
                 Order = section.Order,
                 ParentId = section.ParentId,
+                Products = section.ProductIds.Select(id => new Product { Id = id }).ToArray(),
             };
 
         public static IEnumerable<SectionDTO> ToDTO(this IEnumerable<Section>? sections) => sections?.Select(ToDTO)!;
