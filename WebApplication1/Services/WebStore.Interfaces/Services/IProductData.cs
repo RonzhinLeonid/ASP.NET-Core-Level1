@@ -12,7 +12,7 @@ namespace WebStore.Interfaces.Services
 
         Brand? GetBrandById(int Id);
 
-        IEnumerable<Product> GetProducts(ProductFilter? Filter = null);
+        Page<Product> GetProducts(ProductFilter? Filter = null);
 
         Product? GetProductById(int Id);
     }

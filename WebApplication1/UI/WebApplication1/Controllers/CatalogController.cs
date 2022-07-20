@@ -11,15 +11,19 @@ namespace WebApplication1.Controllers
     {
         private readonly IProductData _productData;
         private readonly IMapper _mapper;
+        private readonly IConfiguration _Configuration;
 
-        public CatalogController(IProductData ProductData, IMapper mapper) 
+        public CatalogController(IProductData ProductData, IMapper mapper, IConfiguration Configuration)
         {
             _productData = ProductData;
-            _mapper = mapper; 
+            _mapper = mapper;
+            _Configuration = Configuration;
         }
 
-        public IActionResult Index([Bind("BrandId,SectionId")] ProductFilter filter)
+        public IActionResult Index([Bind("SectionId,BrandId,PageNumber,PageSize")] ProductFilter filter)
         {
+            filter.PageSize ??= int.TryParse(_Configuration["CatalogPageSize"], out var page_size) ? page_size : null;
+
             var products = _productData.GetProducts(filter);
 
             return View(new CatalogViewModel
@@ -27,8 +31,15 @@ namespace WebApplication1.Controllers
                 BrandId = filter.BrandId,
                 SectionId = filter.SectionId,
                 Products = products
+                   .Items
                    .OrderBy(p => p.Order)
-                   .Select(x => _mapper.Map<ProductViewModel>(x)),
+                   .Select(p => _mapper.Map<ProductViewModel>(p)),
+                PageModel = new()
+                {
+                    Page = filter.PageNumber,
+                    PageSize = filter.PageSize ?? 0,
+                    TotalPages = products.PageCount,
+                }
             });
         }
 
